@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import budget_tracker.views
+
 urlpatterns = [
+    path('', budget_tracker.views.home_page),
     path('admin/', admin.site.urls),
 ]
