@@ -1,6 +1,11 @@
 
 from django.shortcuts import render
 
+from budget_tracker.models import Budget
+
 # Create your views here.
 def home_page(request):
-    return render(request, 'index.html')
+    budgets = Budget.objects.all()
+    return render(request, 'index.html', {
+        'budgets': budgets
+    })

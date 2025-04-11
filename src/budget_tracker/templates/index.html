@@ -4,6 +4,13 @@
         <title>CSCIA 360 Budget Tracker</title>
     </head>
     <body>
-        <p>You have no budgets.</p>
+        {% for budget in budgets %}
+            <p>{{ budget.name }}</p>
+        {% empty %}
+            <p>You have no budgets.</p>
+            <p>
+                <a href="/budgets/new">Click here</a> to create one.
+            </p>
+        {% endfor %}
     </body>
 </html>
