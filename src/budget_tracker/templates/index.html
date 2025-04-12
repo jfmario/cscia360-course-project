@@ -6,7 +6,9 @@
 
     <h2 class="my-3 text-2xl">Income</h2>
 
-    <!-- TODO: Show existing Income entries -->
+    <div id="income"></div>
+
+    <br />
 
     <div id="new-income-form">
         <p>
@@ -23,7 +25,9 @@
 
     <h2 class="my-3 text-2xl">Expenses</h2>
 
-    <!-- TODO: Show existing Expense entries -->
+    <div id="expense"></div>
+
+    <br />
 
     <div id="new-expense-form">
         <p>
@@ -37,4 +41,15 @@
             </a>
         </p>
     </div>
+
+    <div
+        hx-trigger="load"
+        hx-target="#income"
+        hx-get="{% url 'transactions' transaction_type='income' %}"
+    ></div>
+    <div
+        hx-trigger="load"
+        hx-target="#expense"
+        hx-get="{% url 'transactions' transaction_type='expense' %}"
+    ></div>
 {% endblock %}

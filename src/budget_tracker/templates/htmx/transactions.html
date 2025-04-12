@@ -1,0 +1,13 @@
+{% for transaction in transactions %}
+    <div class="gap-4 grid grid-cols-4">
+        <div>
+            <span>{{ transaction.name }}</span>
+        </div>
+        <div>
+            <span>{{ transaction.category }}</span>
+        </div>
+        <div>
+            <span>{{ transaction.amount }}</span>
+        </div>
+    </div>
+{% endfor %}

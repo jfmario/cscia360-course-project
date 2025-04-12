@@ -47,6 +47,15 @@ def transaction(request):
 
     return redirect(reverse('add-new-transaction-button', kwargs={ 'transaction_type': transaction_type }))
 
+def transactions(request, transaction_type):
+    if transaction_type == 'income':
+        transactions = BudgetTransaction.objects.filter(is_income=True)
+    else:
+        transactions = BudgetTransaction.objects.filter(is_expense=True)
+    return render(request, 'htmx/transactions.html', {
+        'transactions': transactions
+    })
+
 def transaction_form(request, transaction_type):
     categories = INCOME_CATEGORIES
     return render(request, 'htmx/transaction-form.html', {
