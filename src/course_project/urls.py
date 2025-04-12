@@ -23,6 +23,7 @@ urlpatterns = [
     path('', budget_tracker.views.home_page),
     path('add-new-transaction-button/<slug:transaction_type>', budget_tracker.views.add_new_transaction_button, name='add-new-transaction-button'),
     path('transaction', budget_tracker.views.transaction, name='transaction'),
+    path('transactions/<slug:transaction_type>', budget_tracker.views.transactions, name='transactions'),
     path('transaction-form/<slug:transaction_type>', budget_tracker.views.transaction_form, name='transaction-form'),
     path('admin/', admin.site.urls),
 ]
