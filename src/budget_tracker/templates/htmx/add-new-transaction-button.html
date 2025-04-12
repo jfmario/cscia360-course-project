@@ -1,0 +1,12 @@
+<div id="new-{{ transaction_type }}-form">
+    <p>
+        <a
+            hx-trigger="click"
+            hx-get="{% url 'transaction-form' transaction_type=transaction_type %}"
+            hx-target="#new-{{ transaction_type }}-form"
+            class="bg-green-500 dark:bg-green-700 px-3 py-2 rounded-md"
+        >
+            Create New {{ transaction_type | title }} Entry
+        </a>
+    </p>
+</div>
