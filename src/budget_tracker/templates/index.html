@@ -4,17 +4,37 @@
 
     <h1 class="mb-3 text-3xl">Budget Tracker</h1>
 
-    {% for budget in budgets %}
-        <p>{{ budget.name }}</p>
-    {% empty %}
-        <p>You have no budgets.</p>
-    {% endfor %}
+    <h2 class="my-3 text-2xl">Income</h2>
 
-    <p class="mt-2">
-        <a 
-            class="bg-green-500 dark:bg-green-800 px-3 py-2 rounded-md"
-            href="/budgets/new"
-        >Create New Budget</a>
-    </p>
+    <!-- TODO: Show existing Income entries -->
 
+    <div id="new-income-form">
+        <p>
+            <a
+                hx-trigger="click"
+                hx-get="{% url 'transaction-form' transaction_type='income' %}"
+                hx-target="#new-income-form"
+                class="bg-green-500 dark:bg-green-700 px-3 py-2 rounded-md"
+            >
+                Create New Income Entry
+            </a>
+        </p>
+    </div>
+
+    <h2 class="my-3 text-2xl">Expenses</h2>
+
+    <!-- TODO: Show existing Expense entries -->
+
+    <div id="new-expense-form">
+        <p>
+            <a
+                hx-trigger="click"
+                hx-get="{% url 'transaction-form' transaction_type='expense' %}"
+                hx-target="#new-expense-form"
+                class="bg-green-500 dark:bg-green-700 px-3 py-2 rounded-md"
+            >
+                Create New Expense Entry
+            </a>
+        </p>
+    </div>
 {% endblock %}
