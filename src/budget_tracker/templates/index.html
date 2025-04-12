@@ -1,16 +1,20 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>CSCIA 360 Budget Tracker</title>
-    </head>
-    <body>
-        {% for budget in budgets %}
-            <p>{{ budget.name }}</p>
-        {% empty %}
-            <p>You have no budgets.</p>
-            <p>
-                <a href="/budgets/new">Click here</a> to create one.
-            </p>
-        {% endfor %}
-    </body>
-</html>
+{% extends 'layouts/base.html' %}
+
+{% block body %}
+
+    <h1 class="mb-3 text-3xl">Budget Tracker</h1>
+
+    {% for budget in budgets %}
+        <p>{{ budget.name }}</p>
+    {% empty %}
+        <p>You have no budgets.</p>
+    {% endfor %}
+
+    <p class="mt-2">
+        <a 
+            class="bg-green-500 dark:bg-green-800 px-3 py-2 rounded-md"
+            href="/budgets/new"
+        >Create New Budget</a>
+    </p>
+
+{% endblock %}
