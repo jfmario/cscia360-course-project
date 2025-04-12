@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+
+{% block body %}
+
+    <h1 class="mb-3 text-3xl">Budget Tracker</h1>
+
+    <h2 class="my-3 text-2xl">Income</h2>
+
+    <div id="income"></div>
+
+    <br />
+
+    <div id="new-income-form">
+        <p>
+            <a
+                hx-trigger="click"
+                hx-get="{% url 'transaction-form' transaction_type='income' %}"
+                hx-target="#new-income-form"
+                class="bg-green-500 dark:bg-green-700 px-3 py-2 rounded-md"
+            >
+                Create New Income Entry
+            </a>
+        </p>
+    </div>
+
+    <h2 class="my-3 text-2xl">Expenses</h2>
+
+    <div id="expense"></div>
+
+    <br />
+
+    <div id="new-expense-form">
+        <p>
+            <a
+                hx-trigger="click"
+                hx-get="{% url 'transaction-form' transaction_type='expense' %}"
+                hx-target="#new-expense-form"
+                class="bg-green-500 dark:bg-green-700 px-3 py-2 rounded-md"
+            >
+                Create New Expense Entry
+            </a>
+        </p>
+    </div>
+
+    <div
+        hx-trigger="load"
+        hx-target="#income"
+        hx-get="{% url 'transactions' transaction_type='income' %}"
+    ></div>
+    <div
+        hx-trigger="load"
+        hx-target="#expense"
+        hx-get="{% url 'transactions' transaction_type='expense' %}"
+    ></div>
+{% endblock %}
