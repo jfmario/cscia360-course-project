@@ -1,0 +1,48 @@
+
+<form
+    hx-put="{% url 'transaction_id' transaction_id=transaction.id %}"
+    hx-target="#transaction-{{ transaction.id }}"
+>
+
+    <input name="transaction_id" type="hidden" value="{{ transaction.id }}">
+
+    <div class="gap-4 grid grid-cols-4">
+        <div>
+            <label>Name</label> <br />
+            <input class="dark:bg-gray-700 border-2 border-gray-500 focus:border-gray-300 rounded-md w-full" type="text" name="name" value="{{ transaction.name }}" required>
+        </div>
+        <div>
+            <label>Category</label> <br />
+            <select class="dark:bg-gray-700 border-2 border-gray-500 focus:border-gray-300 rounded-md w-full" type="text" name="category" value="{{ transaction.category }}">
+                {% for category in categories %}
+                    <option>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Amount</label> <br />
+            <input class="dark:bg-gray-700 border-2 border-gray-500 focus:border-gray-300 rounded-md w-full" type="number" name="amount" step="0.01" value="{{ transaction.amount }}">
+        </div>
+        <div>
+            <div class="flex justify-around">
+                <span>
+                    Submit<br />
+                    <button
+                        type="submit"
+                    >
+                        💾
+                </button>
+                </span>
+                <span>
+                    Cancel<br />
+                    <a
+                        hx-get="{% url 'transaction_id' transaction_id=transaction.id %}"
+                        hx-target="#transaction-{{ transaction.id }}"
+                    >
+                        ❌
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+</form>
