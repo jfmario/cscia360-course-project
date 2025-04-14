@@ -58,7 +58,7 @@ def transactions(request, transaction_type):
 
 def transaction_form(request, transaction_type):
     categories = INCOME_CATEGORIES
-    return render(request, 'htmx/transaction-form.html', {
+    return render(request, 'htmx/new-transaction-form.html', {
         'categories': categories,
         'transaction_type': transaction_type
     })

@@ -1,5 +1,5 @@
 {% for transaction in transactions %}
-    <div class="gap-4 grid grid-cols-4">
+    <div id="transaction-{{ transaction.id }}" class="gap-4 grid grid-cols-4">
         <div>
             <span>{{ transaction.name }}</span>
         </div>
@@ -8,6 +8,24 @@
         </div>
         <div>
             <span>{{ transaction.amount }}</span>
+        </div>
+        <div>
+            <div class="flex justify-around">
+                <span>
+                    <button
+                        type="submit"
+                    >
+                        📝
+                    </button>
+                    Edit
+                </span>
+                <span>
+                    <a>
+                        🗑️
+                    </a>
+                    Delete
+                </span>
+            </div>
         </div>
     </div>
 {% endfor %}
