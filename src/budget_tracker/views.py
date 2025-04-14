@@ -18,6 +18,12 @@ def add_new_transaction_button(request, transaction_type):
         'transaction_type': transaction_type
     })
 
+def delete_transaction_from(request, transaction_id):
+    transaction = BudgetTransaction.objects.get(pk=transaction_id)
+    return render(request, 'htmx/delete-transaction-form.html', {
+        'transaction': transaction
+    })
+
 def edit_transaction_from(request, transaction_id):
 
     transaction = BudgetTransaction.objects.get(pk=transaction_id)
