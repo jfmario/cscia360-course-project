@@ -1,5 +1,5 @@
 
-from django.http import QueryDict
+from django.http import HttpResponse, QueryDict
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -16,6 +16,12 @@ def home_page(request):
 def add_new_transaction_button(request, transaction_type):
     return render(request, 'htmx/add-new-transaction-button.html', {
         'transaction_type': transaction_type
+    })
+
+def delete_transaction_from(request, transaction_id):
+    transaction = BudgetTransaction.objects.get(pk=transaction_id)
+    return render(request, 'htmx/delete-transaction-form.html', {
+        'transaction': transaction
     })
 
 def edit_transaction_from(request, transaction_id):
@@ -39,6 +45,11 @@ def transaction(request, transaction_id):
         return render(request, 'htmx/transaction.html', {
             'transaction': transaction
         })
+
+    if request.method == 'DELETE':
+        transaction = BudgetTransaction.objects.get(pk=transaction_id)
+        transaction.delete()
+        return HttpResponse('')
 
     if request.method == 'POST':
 

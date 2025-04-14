@@ -8,24 +8,30 @@
     <div>
         <span>{{ transaction.amount }}</span>
     </div>
-    <div>
-        <div class="flex justify-around">
-            <span>
-                <a
-                    hx-trigger="click"
-                    hx-get="{% url 'edit-transaction-form' transaction_id=transaction.id %}"
-                    hx-target="#transaction-{{ transaction.id }}"
-                >
-                    📝
-                    Edit
-                </a>
-            </span>
-            <span>
-                <a>
-                    🗑️
-                </a>
-                Delete
-            </span>
+    {% if not hide_buttons %}
+        <div>
+            <div class="flex justify-around">
+                <span>
+                    <a
+                        hx-trigger="click"
+                        hx-get="{% url 'edit-transaction-form' transaction_id=transaction.id %}"
+                        hx-target="#transaction-{{ transaction.id }}"
+                    >
+                        📝
+                        Edit
+                    </a>
+                </span>
+                <span>
+                    <a
+                        hx-trigger="click"
+                        hx-get="{% url 'delete-transaction-form' transaction_id=transaction.id %}"
+                        hx-target="#transaction-{{ transaction.id }}"
+                    >
+                        🗑️
+                        Delete
+                    </a>
+                </span>
+            </div>
         </div>
-    </div>
+    {% endif %}
 </div>
