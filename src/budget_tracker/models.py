@@ -8,6 +8,19 @@ INCOME_CATEGORIES = [
     'Other'
 ]
 
+EXPENSE_CATEGORIES = [
+    'Housing',
+    'Transportation',
+    'Food',
+    'Utilities',
+    'Healthcare',
+    'Liabilities',
+    'Entertainment',
+    'Shopping',
+    'Investments',
+    'Other'
+]
+
 # deprecated
 class Budget(models.Model):
     
