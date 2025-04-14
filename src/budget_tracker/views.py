@@ -1,4 +1,5 @@
 
+from django.http import QueryDict
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -31,7 +32,13 @@ def edit_transaction_from(request, transaction_id):
     })
 
 @csrf_exempt
-def transaction(request):
+def transaction(request, transaction_id):
+
+    if request.method == 'GET':
+        transaction = BudgetTransaction.objects.get(pk=transaction_id)
+        return render(request, 'htmx/transaction.html', {
+            'transaction': transaction
+        })
 
     if request.method == 'POST':
 
@@ -58,7 +65,24 @@ def transaction(request):
 
         entry.save()
 
-    return redirect(reverse('add-new-transaction-button', kwargs={ 'transaction_type': transaction_type }))
+        return redirect(reverse('add-new-transaction-button', kwargs={ 'transaction_type': transaction_type }))
+
+    if request.method == 'PUT':
+
+        put = QueryDict(request.body)
+        name = put.get('name')
+        category = put.get('category')
+        amount = put.get('amount')
+
+        transaction = BudgetTransaction.objects.get(pk=transaction_id)
+        transaction.name = name
+        transaction.category = category
+        transaction.amount = amount
+        transaction.save()
+
+        return render(request, 'htmx/transaction.html', {
+            'transaction': transaction
+        })
 
 def transactions(request, transaction_type):
     if transaction_type == 'income':

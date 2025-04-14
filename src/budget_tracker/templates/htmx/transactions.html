@@ -1,35 +1,5 @@
 {% for transaction in transactions %}
     <div id="transaction-{{ transaction.id }}">
-        <div class="gap-4 grid grid-cols-4">
-            <div>
-                <span>{{ transaction.name }}</span>
-            </div>
-            <div>
-                <span>{{ transaction.category }}</span>
-            </div>
-            <div>
-                <span>{{ transaction.amount }}</span>
-            </div>
-            <div>
-                <div class="flex justify-around">
-                    <span>
-                        <a
-                            hx-trigger="click"
-                            hx-get="{% url 'edit-transaction-form' transaction_id=transaction.id %}"
-                            hx-target="#transaction-{{ transaction.id }}"
-                        >
-                            📝
-                            Edit
-                        </a>
-                    </span>
-                    <span>
-                        <a>
-                            🗑️
-                        </a>
-                        Delete
-                    </span>
-                </div>
-            </div>
-        </div>
+        {% include 'htmx/includes/transaction.html' with transaction=transaction %}
     </div>
 {% endfor %}
