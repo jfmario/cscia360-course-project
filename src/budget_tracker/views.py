@@ -1,5 +1,5 @@
 
-from django.http import QueryDict
+from django.http import HttpResponse, QueryDict
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -45,6 +45,11 @@ def transaction(request, transaction_id):
         return render(request, 'htmx/transaction.html', {
             'transaction': transaction
         })
+
+    if request.method == 'DELETE':
+        transaction = BudgetTransaction.objects.get(pk=transaction_id)
+        transaction.delete()
+        return HttpResponse('')
 
     if request.method == 'POST':
 

@@ -1,4 +1,4 @@
-<div class="bg-red-400 dark:bg-red-500 border border-red-700 p-3 rounded-md">
+<div class="bg-gray-400 dark:bg-gray-500 border border-red-700 p-3 rounded-md">
 
     <p><b><i>
         Are you sure you want to delete this entry?
@@ -7,7 +7,21 @@
     {% include 'htmx/includes/transaction.html' with transaction=transaction hide_buttons=True %}
 
     <p class="m-2">
-        <a class="bg-red-500 dark:bg-red-700 px-3 py-2 rounded-md">Yes</a>
-        <a class="bg-gray-500 px-3 py-2 rounded-md">No</a>
+        <a
+            class="bg-red-500 dark:bg-red-700 px-3 py-2 rounded-md mx-1"
+            hx-trigger="click"
+            hx-delete="{% url 'transaction_id' transaction_id=transaction.id %}"
+            hx-target="#transaction-{{ transaction.id }}"
+        >
+            Yes
+        </a>
+        <a
+            class="bg-gray-700 px-3 py-2 rounded-md"
+            hx-trigger="click"
+            hx-get="{% url 'transaction_id' transaction_id=transaction.id %}"
+            hx-target="#transaction-{{ transaction.id }}"
+        >
+            No
+        </a>
     </p>
 </div>
