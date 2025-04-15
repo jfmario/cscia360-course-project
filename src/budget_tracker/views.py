@@ -1,9 +1,10 @@
 
+from django.http import HttpResponse, QueryDict
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from budget_tracker.models import Budget, BudgetTransaction, INCOME_CATEGORIES
+from budget_tracker.models import Budget, BudgetTransaction, INCOME_CATEGORIES, EXPENSE_CATEGORIES
 
 # Create your views here.
 def home_page(request):
@@ -17,8 +18,38 @@ def add_new_transaction_button(request, transaction_type):
         'transaction_type': transaction_type
     })
 
+def delete_transaction_from(request, transaction_id):
+    transaction = BudgetTransaction.objects.get(pk=transaction_id)
+    return render(request, 'htmx/delete-transaction-form.html', {
+        'transaction': transaction
+    })
+
+def edit_transaction_from(request, transaction_id):
+
+    transaction = BudgetTransaction.objects.get(pk=transaction_id)
+
+    categories = INCOME_CATEGORIES
+    if transaction.is_expense:
+        categories = EXPENSE_CATEGORIES
+
+    return render(request, 'htmx/edit-transaction-form.html', {
+        'categories': categories,
+        'transaction': transaction
+    })
+
 @csrf_exempt
-def transaction(request):
+def transaction(request, transaction_id):
+
+    if request.method == 'GET':
+        transaction = BudgetTransaction.objects.get(pk=transaction_id)
+        return render(request, 'htmx/transaction.html', {
+            'transaction': transaction
+        })
+
+    if request.method == 'DELETE':
+        transaction = BudgetTransaction.objects.get(pk=transaction_id)
+        transaction.delete()
+        return HttpResponse('')
 
     if request.method == 'POST':
 
@@ -45,7 +76,24 @@ def transaction(request):
 
         entry.save()
 
-    return redirect(reverse('add-new-transaction-button', kwargs={ 'transaction_type': transaction_type }))
+        return redirect(reverse('add-new-transaction-button', kwargs={ 'transaction_type': transaction_type }))
+
+    if request.method == 'PUT':
+
+        put = QueryDict(request.body)
+        name = put.get('name')
+        category = put.get('category')
+        amount = put.get('amount')
+
+        transaction = BudgetTransaction.objects.get(pk=transaction_id)
+        transaction.name = name
+        transaction.category = category
+        transaction.amount = amount
+        transaction.save()
+
+        return render(request, 'htmx/transaction.html', {
+            'transaction': transaction
+        })
 
 def transactions(request, transaction_type):
     if transaction_type == 'income':
@@ -58,7 +106,9 @@ def transactions(request, transaction_type):
 
 def transaction_form(request, transaction_type):
     categories = INCOME_CATEGORIES
-    return render(request, 'htmx/transaction-form.html', {
+    if transaction_type == 'expense':
+        categories = EXPENSE_CATEGORIES
+    return render(request, 'htmx/new-transaction-form.html', {
         'categories': categories,
         'transaction_type': transaction_type
     })
