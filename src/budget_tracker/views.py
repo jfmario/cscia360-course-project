@@ -38,7 +38,7 @@ def edit_transaction_from(request, transaction_id):
     })
 
 @csrf_exempt
-def transaction(request, transaction_id):
+def transaction(request, transaction_id=None):
 
     if request.method == 'GET':
         transaction = BudgetTransaction.objects.get(pk=transaction_id)
