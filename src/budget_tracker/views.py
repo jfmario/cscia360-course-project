@@ -96,7 +96,7 @@ def transaction(request, transaction_id=None):
         })
 
 @csrf_exempt
-def transactions(request, transaction_type):
+def transactions(request, transaction_type, amount_sort=None):
 
     category = 'ALL'
 
@@ -111,6 +111,11 @@ def transactions(request, transaction_type):
         categories = EXPENSE_CATEGORIES
     if category != 'ALL':
         transactions = transactions.filter(category=category)
+
+    if amount_sort == 'asc':
+        transactions = transactions.order_by('amount')
+    if amount_sort == 'desc':
+        transactions = transactions.order_by('-amount')
 
     return render(request, 'htmx/transactions.html', {
         'filter_category': category,

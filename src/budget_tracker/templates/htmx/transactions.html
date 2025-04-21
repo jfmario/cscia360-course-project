@@ -22,6 +22,28 @@
 
 <br />
 
+<div class="gap-4 grid grid-cols-4">
+    <div><span class="font-bold underline">Name</span></div>
+    <div><span class="font-bold underline">Category</span></div>
+    <div>
+        <span class="font-bold underline">Amount</span>
+        <span
+            hx-trigger="click"
+            hx-target="#{{ transaction_type }}"
+            hx-get="{% url 'transactions_amount_sort' transaction_type=transaction_type amount_sort='asc' %}"
+        >
+            ⬆️
+        </span>
+        <span
+            hx-trigger="click"
+            hx-target="#{{ transaction_type }}"
+            hx-get="{% url 'transactions_amount_sort' transaction_type=transaction_type amount_sort='desc' %}"    
+        >
+            ⬇️
+        </span>
+    </div>  
+</div>
+
 {% for transaction in transactions %}
     <div id="transaction-{{ transaction.id }}">
         {% include 'htmx/includes/transaction.html' with transaction=transaction %}

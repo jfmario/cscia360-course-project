@@ -27,6 +27,7 @@ urlpatterns = [
     path('transaction', budget_tracker.views.transaction, name='transaction'),
     path('transaction/<int:transaction_id>', budget_tracker.views.transaction, name='transaction_id'),
     path('transactions/<slug:transaction_type>', budget_tracker.views.transactions, name='transactions'),
+    path('transactions/<slug:transaction_type>/amount_sort/<slug:amount_sort>', budget_tracker.views.transactions, name='transactions_amount_sort'),
     path('transaction-form/<slug:transaction_type>', budget_tracker.views.transaction_form, name='transaction-form'),
     path('admin/', admin.site.urls),
 ]
