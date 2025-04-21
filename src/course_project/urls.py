@@ -21,6 +21,7 @@ import budget_tracker.views
 
 urlpatterns = [
     path('', budget_tracker.views.home_page),
+    path('balance', budget_tracker.views.balance, name='balance'),
     path('add-new-transaction-button/<slug:transaction_type>', budget_tracker.views.add_new_transaction_button, name='add-new-transaction-button'),
     path('delete-transaction-form/<int:transaction_id>', budget_tracker.views.delete_transaction_from, name='delete-transaction-form'),
     path('edit-transaction-form/<int:transaction_id>', budget_tracker.views.edit_transaction_from, name='edit-transaction-form'),

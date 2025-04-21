@@ -49,3 +49,15 @@
         {% include 'htmx/includes/transaction.html' with transaction=transaction %}
     </div>
 {% endfor %}
+
+<br />
+
+<div class="gap-4 grid grid-cols-4">
+    <div>
+        <span class="font-bold">Total:</span>
+    </div>
+    <div></div>
+    <div>
+        <span class="font-bold">${{ total }}</span>
+    </div>
+</div>
