@@ -42,6 +42,8 @@
         </p>
     </div>
 
+    <div id="balance"></div>
+
     <div
         hx-trigger="load"
         hx-target="#income"
@@ -52,4 +54,9 @@
         hx-target="#expense"
         hx-get="{% url 'transactions' transaction_type='expense' %}"
     ></div>
+    <div
+    hx-trigger="load"
+    hx-target="#balance"
+    hx-get="{% url 'balance' %}"
+></div>
 {% endblock %}

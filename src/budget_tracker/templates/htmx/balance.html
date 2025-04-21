@@ -1,0 +1,11 @@
+<div class="gap-4 grid grid-cols-4 mt-3">
+    <div>
+        <span class="font-bold">Net Balance:</span>
+    </div>
+    <div></div>
+    <div>
+        <span class="font-bold {% if balance > 0 %}text-green-500{% else %}text-red-500{% endif %}">
+            ${{ balance }}
+        </span>
+    </div>
+</div>

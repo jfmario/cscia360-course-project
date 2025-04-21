@@ -18,6 +18,22 @@ def add_new_transaction_button(request, transaction_type):
         'transaction_type': transaction_type
     })
 
+def balance(request):
+
+    transactions = BudgetTransaction.objects.all()
+
+    balance = 0
+
+    for transaction in transactions:
+        if transaction.is_income:
+            balance += transaction.amount
+        if transaction.is_expense:
+            balance -= transaction.amount
+
+    return render(request, 'htmx/balance.html', {
+        'balance': balance
+    })
+
 def delete_transaction_from(request, transaction_id):
     transaction = BudgetTransaction.objects.get(pk=transaction_id)
     return render(request, 'htmx/delete-transaction-form.html', {
@@ -95,13 +111,36 @@ def transaction(request, transaction_id=None):
             'transaction': transaction
         })
 
-def transactions(request, transaction_type):
+@csrf_exempt
+def transactions(request, transaction_type, amount_sort=None):
+
+    category = 'ALL'
+
+    if request.method == 'POST':
+        category = request.POST.get('category')
+
     if transaction_type == 'income':
         transactions = BudgetTransaction.objects.filter(is_income=True)
+        categories = INCOME_CATEGORIES
     else:
         transactions = BudgetTransaction.objects.filter(is_expense=True)
+        categories = EXPENSE_CATEGORIES
+    if category != 'ALL':
+        transactions = transactions.filter(category=category)
+
+    if amount_sort == 'asc':
+        transactions = transactions.order_by('amount')
+    if amount_sort == 'desc':
+        transactions = transactions.order_by('-amount')
+
+    total = sum([e.amount for e in transactions.all()])
+
     return render(request, 'htmx/transactions.html', {
-        'transactions': transactions
+        'filter_category': category,
+        'categories': categories,
+        'transaction_type': transaction_type,
+        'transactions': transactions,
+        'total': total
     })
 
 def transaction_form(request, transaction_type):

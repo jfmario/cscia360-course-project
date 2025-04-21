@@ -1,5 +1,63 @@
+<div class="gap-4 grid grid-cols-4">
+    <div></div>
+    <div>
+
+        <form>
+            <b>Filter Category</b> <br />
+            
+            <select class="dark:bg-gray-700 border-2 border-gray-500 focus:border-gray-300 rounded-md w-full"
+                name="category"
+                hx-post="{% url 'transactions' transaction_type=transaction_type %}"
+                hx-target="#{{ transaction_type }}"
+            >
+                <option value="ALL">---</option>
+
+                {% for category in categories %}
+                    <option {% if filter_category == category %}selected="selected"{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+</div>
+
+<br />
+
+<div class="gap-4 grid grid-cols-4">
+    <div><span class="font-bold underline">Name</span></div>
+    <div><span class="font-bold underline">Category</span></div>
+    <div>
+        <span class="font-bold underline">Amount</span>
+        <span
+            hx-trigger="click"
+            hx-target="#{{ transaction_type }}"
+            hx-get="{% url 'transactions_amount_sort' transaction_type=transaction_type amount_sort='asc' %}"
+        >
+            ⬆️
+        </span>
+        <span
+            hx-trigger="click"
+            hx-target="#{{ transaction_type }}"
+            hx-get="{% url 'transactions_amount_sort' transaction_type=transaction_type amount_sort='desc' %}"    
+        >
+            ⬇️
+        </span>
+    </div>  
+</div>
+
 {% for transaction in transactions %}
     <div id="transaction-{{ transaction.id }}">
         {% include 'htmx/includes/transaction.html' with transaction=transaction %}
     </div>
 {% endfor %}
+
+<br />
+
+<div class="gap-4 grid grid-cols-4">
+    <div>
+        <span class="font-bold">Total:</span>
+    </div>
+    <div></div>
+    <div>
+        <span class="font-bold">${{ total }}</span>
+    </div>
+</div>
