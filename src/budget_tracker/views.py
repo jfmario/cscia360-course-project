@@ -95,12 +95,27 @@ def transaction(request, transaction_id=None):
             'transaction': transaction
         })
 
+@csrf_exempt
 def transactions(request, transaction_type):
+
+    category = 'ALL'
+
+    if request.method == 'POST':
+        category = request.POST.get('category')
+
     if transaction_type == 'income':
         transactions = BudgetTransaction.objects.filter(is_income=True)
+        categories = INCOME_CATEGORIES
     else:
         transactions = BudgetTransaction.objects.filter(is_expense=True)
+        categories = EXPENSE_CATEGORIES
+    if category != 'ALL':
+        transactions = transactions.filter(category=category)
+
     return render(request, 'htmx/transactions.html', {
+        'filter_category': category,
+        'categories': categories,
+        'transaction_type': transaction_type,
         'transactions': transactions
     })
 
