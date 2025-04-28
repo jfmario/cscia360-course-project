@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from budget_tracker.models import Budget, BudgetTransaction, INCOME_CATEGORIES, EXPENSE_CATEGORIES
+import budget_tracker.service as budget_tracker_svc
 
 # Create your views here.
 def home_page(request):
@@ -20,15 +21,7 @@ def add_new_transaction_button(request, transaction_type):
 
 def balance(request):
 
-    transactions = BudgetTransaction.objects.all()
-
-    balance = 0
-
-    for transaction in transactions:
-        if transaction.is_income:
-            balance += transaction.amount
-        if transaction.is_expense:
-            balance -= transaction.amount
+    balance = budget_tracker_svc.calculate_balance()
 
     return render(request, 'htmx/balance.html', {
         'balance': balance
@@ -63,8 +56,7 @@ def transaction(request, transaction_id=None):
         })
 
     if request.method == 'DELETE':
-        transaction = BudgetTransaction.objects.get(pk=transaction_id)
-        transaction.delete()
+        budget_tracker_svc.delete_transaction(transaction_id)
         return HttpResponse('')
 
     if request.method == 'POST':
@@ -74,23 +66,7 @@ def transaction(request, transaction_id=None):
         category = request.POST.get('category')
         amount = request.POST.get('amount')
 
-        is_income = False
-        is_expense = False
-
-        if transaction_type == 'income':
-            is_income = True
-        if transaction_type == 'expense':
-            is_expense = True
-
-        entry = BudgetTransaction(
-            is_income=is_income,
-            is_expense=is_expense,
-            name=name,
-            category=category,
-            amount=amount
-        )
-
-        entry.save()
+        transaction = budget_tracker_svc.create_transaction(name, category, amount, transaction_type)
 
         return redirect(reverse('add-new-transaction-button', kwargs={ 'transaction_type': transaction_type }))
 
@@ -101,11 +77,7 @@ def transaction(request, transaction_id=None):
         category = put.get('category')
         amount = put.get('amount')
 
-        transaction = BudgetTransaction.objects.get(pk=transaction_id)
-        transaction.name = name
-        transaction.category = category
-        transaction.amount = amount
-        transaction.save()
+        transaction = budget_tracker_svc.edit_transaction(transaction_id, name, category, amount)
 
         return render(request, 'htmx/transaction.html', {
             'transaction': transaction
