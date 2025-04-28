@@ -27,4 +27,22 @@ class BudgetTrackerTest(TestCase):
         self.assertEqual(t.amount, 200.0)
         self.assertEqual(t.is_income, True)
         self.assertEqual(t.is_expense, False)
-        
+
+    def test_delete_transaction(self):
+        self.assertEqual(BudgetTransaction.objects.count(), 0)
+        t = budget_tracker_svc.create_transaction("Royalties", "Other", 100.0, 'income')
+        self.assertEqual(BudgetTransaction.objects.count(), 1)
+        budget_tracker_svc.delete_transaction(t.id)
+        self.assertEqual(BudgetTransaction.objects.count(), 0)
+
+    def test_calculate_balance(self):
+        self.assertEqual(BudgetTransaction.objects.count(), 0)
+        balance = budget_tracker_svc.calculate_balance()
+        self.assertEqual(balance, 0)
+        budget_tracker_svc.create_transaction("Royalties", "Other", 100.0, 'income')
+        budget_tracker_svc.create_transaction("Salary", "Salary/Wages", 600.0, 'income')
+        budget_tracker_svc.create_transaction("Rash Spending", "Other", 500.0, 'expense')
+        self.assertEqual(BudgetTransaction.objects.count(), 3)
+        balance = budget_tracker_svc.calculate_balance()
+        self.assertEqual(balance, 200)
+
